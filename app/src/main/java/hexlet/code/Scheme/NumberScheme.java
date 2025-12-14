@@ -1,5 +1,6 @@
 package hexlet.code.Scheme;
 
+import hexlet.code.Interface.BaseScheme;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class NumberScheme {
+public class NumberScheme implements BaseScheme {
     private boolean required = false;
     private boolean positive = false;
     private Integer maxValue = null;
@@ -33,7 +34,8 @@ public class NumberScheme {
         return this;
     }
 
-    public boolean isValid(Integer value) {
+    public boolean isValid(Object values) {
+        Integer value = (Integer) values;
         if (!required && value == null) {
             return true;
         }

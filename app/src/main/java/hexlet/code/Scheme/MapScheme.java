@@ -1,17 +1,20 @@
 package hexlet.code.Scheme;
 
+import hexlet.code.Interface.BaseScheme;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class MapScheme {
+public class MapScheme implements BaseScheme {
     private boolean required = false;
     private Integer sizeof = null;
+    private Map<String, BaseScheme> shapeScheme = new HashMap<>();
 
     public MapScheme required() {
         this.required = true;
@@ -23,17 +26,46 @@ public class MapScheme {
         return this;
     }
 
-    public <K, V> boolean isValid(Map<K, V> map) {
-        if (!required && map == null) {
-            return true;
+    public MapScheme shape(Map<String, BaseScheme> schemas) {
+        this.shapeScheme = new HashMap<>(schemas);
+        return this;
+    }
+
+    @Override
+    public boolean isValid(Object value) {
+        // Проверка required
+        if (value == null) {
+            return !required;
         }
 
-        if (required && map ==  null) {
+        // Проверка типа
+        if (!(value instanceof Map)) {
             return false;
         }
 
-        if (map.size() != sizeof) {
+        Map<?, ?> map = (Map<?, ?>) value;
+
+        // Проверка sizeof
+        if (sizeof != null && map.size() != sizeof) {
             return false;
+        }
+
+        // ВАЖНО: Добавляем проверку shapeScheme!
+        // Если есть схемы для проверки, проверяем каждую
+        if (!shapeScheme.isEmpty()) {
+            for (Map.Entry<String, BaseScheme> entry : shapeScheme.entrySet()) {
+                String key = entry.getKey();
+                BaseScheme schema = entry.getValue();
+
+                // Получаем значение из мапы по ключу
+                Object mapValue = map.get(key);
+
+                // Проверяем значение по соответствующей схеме
+                // Если схема говорит, что значение невалидно - возвращаем false
+                if (!schema.isValid(mapValue)) {
+                    return false;
+                }
+            }
         }
 
         return true;

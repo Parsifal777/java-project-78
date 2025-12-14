@@ -10,14 +10,29 @@ import java.util.Map;
 @NoArgsConstructor
 public class Valid {
     public StringScheme string() {
-        return new StringScheme();
+        return new StringScheme() {
+            @Override
+            public boolean isValid(Object value) {
+                return false;
+            }
+        };
     }
 
     public NumberScheme number() {
-        return new NumberScheme();
+        return new NumberScheme() {
+            @Override
+            public boolean isValid(Object value) {
+                return false;
+            }
+        };
     }
 
     public MapScheme map() {
-        return new MapScheme();
+        return new MapScheme() {
+            @Override
+            public boolean isValid(Object value) {
+                return false;
+            }
+        };
     }
 }
