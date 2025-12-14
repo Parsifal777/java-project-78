@@ -2,37 +2,19 @@ package hexlet.code;
 
 import hexlet.code.Scheme.MapScheme;
 import hexlet.code.Scheme.StringScheme;
-import lombok.NoArgsConstructor;
 import hexlet.code.Scheme.NumberScheme;
 
-import java.util.Map;
-
-@NoArgsConstructor
 public class Valid {
+
     public StringScheme string() {
-        return new StringScheme() {
-            @Override
-            public boolean isValid(Object value) {
-                return false;
-            }
-        };
+        return new StringScheme();  // Простой экземпляр, не анонимный класс
     }
 
     public NumberScheme number() {
-        return new NumberScheme() {
-            @Override
-            public boolean isValid(Object value) {
-                return false;
-            }
-        };
+        return new NumberScheme();  // Простой экземпляр, не анонимный класс
     }
 
     public MapScheme map() {
-        return new MapScheme() {
-            @Override
-            public boolean isValid(Object value) {
-                return false;
-            }
-        };
+        return new MapScheme();  // Простой экземпляр
     }
 }
